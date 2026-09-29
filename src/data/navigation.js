@@ -1,9 +1,8 @@
 /**
- * Main navigation. Each item points to a local route.
- * Section routes (/about, /skills, ...) scroll to that section on the home page.
+ * Main navigation. Each item points to a local route that scrolls to that
+ * section on the home page. The name in the top-left corner links home.
  */
 export const navItems = [
-  { id: 'home', label: 'Home', path: '/' },
   { id: 'about', label: 'About', path: '/about' },
   { id: 'skills', label: 'Skills', path: '/skills' },
   { id: 'projects', label: 'Projects', path: '/projects' },
@@ -13,4 +12,4 @@ export const navItems = [
 ]
 
 // Section ids that have their own route.
-export const sectionIds = navItems.filter((item) => item.id !== 'home').map((item) => item.id)
+export const sectionIds = navItems.map((item) => item.id)

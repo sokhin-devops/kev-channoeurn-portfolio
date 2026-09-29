@@ -1,49 +1,25 @@
-import { Mail } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { ArrowUp } from 'lucide-react'
 import { profile } from '../../data/profile'
-import { FutureLink } from '../ui/FutureLink'
-import { GitHubIcon } from '../ui/GitHubIcon'
+import { prefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
 
 export function Footer() {
   const year = new Date().getFullYear()
 
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'instant' : 'smooth' })
+  }
+
   return (
     <footer className="footer">
-      <div className="container">
-        <div className="footer__top">
-          <div className="footer__brand">
-            <Link to="/" className="brand" aria-label={`${profile.name}, home`}>
-              <span className="brand__mark" aria-hidden="true">
-                {profile.initials}
-              </span>
-              <span className="brand__name">{profile.name}</span>
-            </Link>
-            <p className="footer__role">{profile.role}</p>
-            <p className="footer__tagline">“{profile.tagline}”</p>
-          </div>
-
-          <div className="footer__links">
-            <a className="footer__link" href={`mailto:${profile.email}`}>
-              <Mail size={15} aria-hidden="true" />
-              {profile.email}
-            </a>
-            <FutureLink
-              href={profile.links.github}
-              label="GitHub"
-              icon={GitHubIcon}
-              variant="ghost"
-              size="sm"
-              className="footer__future"
-            />
-          </div>
-        </div>
-
-        <div className="footer__bottom">
-          <p>
-            © {year} {profile.name}. All rights reserved.
-          </p>
-          <p>Built with React and Vite.</p>
-        </div>
+      <div className="container footer__inner">
+        <p>
+          © {year} {profile.name}
+        </p>
+        <p className="footer__tagline">{profile.tagline}</p>
+        <button type="button" className="footer__top" onClick={scrollToTop}>
+          Back to top
+          <ArrowUp size={14} aria-hidden="true" />
+        </button>
       </div>
     </footer>
   )

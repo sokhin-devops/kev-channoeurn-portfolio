@@ -8,7 +8,7 @@ Personal portfolio website of **Kev Channoeurn**, a Computer Science student and
 
 Kev Channoeurn is a Computer Science student at the Royal University of Phnom Penh (2023 – Present). He is building practical front-end projects with React and is looking for a Front-End internship.
 
-The portfolio uses a **Linear-inspired Glass Ambient** design: dark mode by default, subtle glass panels, thin borders, soft ambient gradients and calm animations. It also supports light mode and a system mode that follows the operating system.
+The portfolio uses a clean, modern layout inspired by Linear: dark mode by default, a floating glass navigation, generous spacing, thin dividers, one soft ambient light and calm animations. Each section keeps its title in a narrow left column, and a single italic serif accent with a drawn underline adds a personal touch. It also supports light mode and a system mode that follows the operating system.
 
 ## Tech Stack
 
@@ -24,9 +24,9 @@ No UI framework or chart library is used. The dashboard chart is built with HTML
 
 ## Features
 
-- One-page portfolio with sections for Home, About, Skills, Projects, Experience, Education, Interests and Contact
+- One-page portfolio with sections for About, Skills, Projects, Experience, Education and Contact
 - Each section has its own route (for example `/skills`) that scrolls to the section
-- Sticky glass navigation with an active-section highlight and a mobile menu
+- Floating glass navigation with an active-section highlight and a glass mobile menu
 - Dark, Light and System themes, saved in LocalStorage, with smooth colour transitions
 - Three working demo projects, each with a detail page and a full-screen demo page
 - Subtle reveal animations that are turned off when the user prefers reduced motion
@@ -172,7 +172,7 @@ kev-portfolio/
     │   ├── task-manager/
     │   ├── shop-dashboard/
     │   └── weather-explorer/
-    ├── sections/           # Hero, About, Skills, Projects, Experience, Education, Interests, Contact
+    ├── sections/           # Hero, About, Skills, Projects, Experience, Education, Contact
     ├── styles/             # Design tokens, base styles, layout, components, sections
     └── utils/
 ```
@@ -180,6 +180,6 @@ kev-portfolio/
 ## Updating Content
 
 - **Contact details, skills, education, experience:** edit `src/data/profile.js`.
-- **GitHub profile link:** set `links.github` in `src/data/profile.js`. While it is `null`, the site shows "GitHub — Coming Soon".
+- **GitHub profile link:** set `links.github` in `src/data/profile.js`. While it is `null`, no GitHub icon is shown in the navigation.
 - **Project GitHub / Live Demo links:** set in `src/data/projects.js`. `links.github` already points to each project's repository. `links.demo` is `null` until a project is deployed, so the cards show "Local Project".
 - **Profile photo:** replace `src/assets/kev-channoeurn.jpg`, keeping the same file name.

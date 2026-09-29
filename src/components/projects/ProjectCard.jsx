@@ -1,59 +1,43 @@
-import { ArrowRight, Check } from 'lucide-react'
+import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { Badge } from '../ui/Badge'
-import { Button } from '../ui/Button'
-import { SpotlightCard } from '../ui/SpotlightCard'
-import { ProjectLinks } from './ProjectLinks'
 import { ProjectPreview } from './ProjectPreview'
 
 export function ProjectCard({ project }) {
   const detailPath = `/projects/${project.slug}`
-  const titleId = `project-${project.slug}-title`
 
   return (
-    <SpotlightCard as="article" className="project-card" data-accent={project.accent} aria-labelledby={titleId}>
-      {/* The preview is also a link, but the title link is the one announced to screen readers. */}
-      <Link to={detailPath} className="project-card__media" tabIndex={-1} aria-hidden="true">
+    <article className="project" data-accent={project.accent} aria-labelledby={`project-${project.slug}-title`}>
+      {/* The preview repeats the title link, so it is hidden from keyboard and screen readers. */}
+      <Link to={detailPath} className="project__media" tabIndex={-1} aria-hidden="true">
         <ProjectPreview slug={project.slug} name={project.name} />
       </Link>
 
-      <div className="project-card__body">
-        <p className="project-card__meta">
-          <span className="project-card__number">{project.number}</span>
-          <span>{project.style}</span>
-        </p>
-
-        <h3 id={titleId} className="project-card__title">
+      <div className="project__body">
+        <h3 id={`project-${project.slug}-title`} className="project__title">
           <Link to={detailPath}>{project.name}</Link>
         </h3>
-        <p className="project-card__description">{project.description}</p>
+        <p className="project__description">{project.description}</p>
+        <p className="project__tech">{project.technologies.map((tech) => tech.name).join(' · ')}</p>
 
-        <ul className="badge-list" aria-label="Technologies">
-          {project.technologies.map((tech) => (
-            <li key={tech.name}>
-              <Badge>{tech.name}</Badge>
-            </li>
-          ))}
-        </ul>
-
-        <ul className="project-card__features" aria-label="Key features">
-          {project.highlights.map((feature) => (
-            <li key={feature}>
-              <Check size={14} aria-hidden="true" />
-              {feature}
-            </li>
-          ))}
-        </ul>
-
-        <div className="project-card__actions">
-          <Button to={detailPath} iconTrailing={ArrowRight} aria-label={`View project: ${project.name}`}>
-            View Project
-          </Button>
-          <div className="project-card__links">
-            <ProjectLinks links={project.links} size="sm" />
-          </div>
+        <div className="project__links">
+          <Link to={detailPath} className="text-link" aria-label={`View project: ${project.name}`}>
+            View project
+            <ArrowRight size={15} aria-hidden="true" />
+          </Link>
+          {project.links.github && (
+            <a
+              href={project.links.github}
+              className="text-link text-link--muted"
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`${project.name} source code on GitHub`}
+            >
+              GitHub
+              <ArrowUpRight size={15} aria-hidden="true" />
+            </a>
+          )}
         </div>
       </div>
-    </SpotlightCard>
+    </article>
   )
 }

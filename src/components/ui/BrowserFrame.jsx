@@ -1,7 +1,7 @@
 import { cx } from '../../utils/cx'
 
 /** A simple app-window frame used to present a live project preview. */
-export function BrowserFrame({ title, badge, className, children }) {
+export function BrowserFrame({ title, className, children }) {
   return (
     <div className={cx('browser-frame', className)}>
       <div className="browser-frame__bar">
@@ -11,7 +11,6 @@ export function BrowserFrame({ title, badge, className, children }) {
           <span />
         </span>
         <span className="browser-frame__title">{title}</span>
-        {badge && <span className="browser-frame__badge">{badge}</span>}
       </div>
       <div className="browser-frame__body">{children}</div>
     </div>

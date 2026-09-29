@@ -6,7 +6,7 @@ import { profile } from '../../data/profile'
 import { useScrollSpy } from '../../hooks/useScrollSpy'
 import { cx } from '../../utils/cx'
 import { ThemeSwitcher } from '../ui/ThemeSwitcher'
-import { GitHubPlaceholderButton } from './GitHubPlaceholderButton'
+import { GitHubLink } from './GitHubLink'
 
 const spyIds = ['home', ...sectionIds]
 
@@ -18,7 +18,7 @@ export function Navbar() {
 
   const routeSection = pathname === '/' ? 'home' : pathname.slice(1)
   const isHomePage = spyIds.includes(routeSection)
-  const spiedSection = useScrollSpy(spyIds, isHomePage)
+  const spiedSection = useScrollSpy(spyIds, { enabled: isHomePage, preferredId: isHomePage ? routeSection : null })
 
   // On the home page the scroll position decides the active link.
   // On project pages "Projects" stays active.
@@ -61,48 +61,45 @@ export function Navbar() {
 
   return (
     <header className={cx('navbar', (isScrolled || isMenuOpen) && 'is-solid')}>
-      <nav className="container navbar__inner" aria-label="Main">
-        <Link to="/" className="brand" onClick={closeMenu} aria-label={`${profile.name}, home`}>
-          <span className="brand__mark" aria-hidden="true">
-            {profile.initials}
-          </span>
-          <span className="brand__name">{profile.name}</span>
-        </Link>
+      <div className="container navbar__container">
+        <nav className="navbar__inner" aria-label="Main">
+          <Link to="/" className="brand" onClick={closeMenu}>
+            {profile.name}
+          </Link>
 
-        <ul className="nav-links">
-          {navItems.map((item) => (
-            <li key={item.id}>
-              <Link
-                to={item.path}
-                className={cx('nav-link', activeId === item.id && 'is-active')}
-                aria-current={activeId === item.id ? 'page' : undefined}
-              >
-                {item.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
+          <ul className="nav-links">
+            {navItems.map((item) => (
+              <li key={item.id}>
+                <Link
+                  to={item.path}
+                  className={cx('nav-link', activeId === item.id && 'is-active')}
+                  aria-current={activeId === item.id ? 'page' : undefined}
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
 
-        <div className="navbar__actions">
-          <ThemeSwitcher className="navbar__theme" />
-          <GitHubPlaceholderButton />
-          <button
-            ref={menuButtonRef}
-            type="button"
-            className="icon-btn menu-toggle"
-            aria-expanded={isMenuOpen}
-            aria-controls="mobile-menu"
-            aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-            onClick={() => setIsMenuOpen((open) => !open)}
-          >
-            {isMenuOpen ? <X size={18} aria-hidden="true" /> : <Menu size={18} aria-hidden="true" />}
-          </button>
-        </div>
-      </nav>
+          <div className="navbar__actions">
+            <ThemeSwitcher className="navbar__theme" />
+            <GitHubLink />
+            <button
+              ref={menuButtonRef}
+              type="button"
+              className="icon-btn menu-toggle"
+              aria-expanded={isMenuOpen}
+              aria-controls="mobile-menu"
+              aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+              onClick={() => setIsMenuOpen((open) => !open)}
+            >
+              {isMenuOpen ? <X size={18} aria-hidden="true" /> : <Menu size={18} aria-hidden="true" />}
+            </button>
+          </div>
+        </nav>
 
-      {isMenuOpen && (
-        <div id="mobile-menu" className="mobile-menu">
-          <div className="container">
+        {isMenuOpen && (
+          <div id="mobile-menu" className="mobile-menu">
             <ul className="mobile-menu__links">
               {navItems.map((item, index) => (
                 <li key={item.id} style={{ '--i': index }}>
@@ -122,8 +119,11 @@ export function Navbar() {
               <ThemeSwitcher showLabels />
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
+
+      {/* Dims the page behind the open menu; tapping it closes the menu. */}
+      {isMenuOpen && <div className="mobile-menu__backdrop" onClick={closeMenu} aria-hidden="true" />}
     </header>
   )
 }

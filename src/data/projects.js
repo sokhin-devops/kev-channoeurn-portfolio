@@ -9,14 +9,12 @@
 export const projects = [
   {
     slug: 'student-task-manager',
-    number: '01',
     name: 'Student Task Manager',
     tagline: 'Organize assignments, deadlines and daily tasks in one place.',
     description:
       'A responsive task management application designed for students to organize assignments, deadlines and daily tasks.',
     style: 'Minimalist + Ambient',
     accent: 'violet',
-    purpose: 'Demonstrates React fundamentals and practical state management.',
     overview:
       'Student Task Manager is a small productivity app built with React. Tasks can be added, edited, completed and deleted, and everything is saved in the browser with LocalStorage, so the list is still there after a page refresh.',
     problem:
@@ -33,7 +31,6 @@ export const projects = [
       'Saved with LocalStorage',
       'Responsive layout with dark and light mode',
     ],
-    highlights: ['Add, edit & delete tasks', 'Search and status filters', 'Priorities & due dates', 'LocalStorage persistence'],
     technologies: [
       { name: 'React', usage: 'Components, useState, useEffect and useMemo' },
       { name: 'JavaScript', usage: 'Filtering, sorting and date logic' },
@@ -49,14 +46,12 @@ export const projects = [
   },
   {
     slug: 'mini-shop-dashboard',
-    number: '02',
     name: 'Mini Shop Dashboard',
     tagline: 'Manage products and view basic sales information.',
     description:
       'A small e-commerce dashboard for managing products and viewing basic sales information.',
     style: 'Material + SaaS',
     accent: 'blue',
-    purpose: 'Demonstrates dashboard UI, CRUD interactions, filtering and data visualization.',
     overview:
       'Mini Shop Dashboard is an admin-style interface for a small online shop. It uses sample data stored in the browser, so products can be added, edited and deleted without a backend.',
     problem:
@@ -73,7 +68,6 @@ export const projects = [
       'Product details view',
       'Stock status badges',
     ],
-    highlights: ['Summary cards & sales chart', 'Product CRUD with forms', 'Search & category filter', 'Stock status badges'],
     technologies: [
       { name: 'React', usage: 'Views, forms and derived statistics' },
       { name: 'JavaScript', usage: 'Calculating totals and chart data' },
@@ -89,14 +83,12 @@ export const projects = [
   },
   {
     slug: 'weather-explorer',
-    number: '03',
     name: 'Weather & Travel Explorer',
     tagline: 'Search cities and check current weather and the 5-day forecast.',
     description:
       'A responsive weather exploration application that allows users to search cities and view current and forecast weather information.',
     style: 'Ambient + Glass',
     accent: 'cyan',
-    purpose: 'Demonstrates REST API integration and asynchronous React development.',
     overview:
       'Weather & Travel Explorer fetches real data from the free Open-Meteo API. Search for a city, pick the right match and see the current conditions, a 5-day forecast and a short travel note. The background adapts subtly to the weather.',
     problem:
@@ -113,7 +105,6 @@ export const projects = [
       'Weather-based ambient background',
       'Responsive design',
     ],
-    highlights: ['Live REST API data', 'Current weather & 5-day forecast', 'Favorite cities', 'Loading, error & empty states'],
     technologies: [
       { name: 'React', usage: 'Async state with useEffect and custom hooks' },
       { name: 'JavaScript', usage: 'fetch, async/await and AbortController' },
