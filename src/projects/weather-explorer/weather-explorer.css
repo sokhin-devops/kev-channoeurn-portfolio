@@ -1,0 +1,886 @@
+/*
+ * Weather & Travel Explorer — "Ambient + Glass".
+ * The background glow changes with the weather ([data-weather]) and time of day ([data-time]).
+ * Effects stay subtle, and animations stop when reduced motion is preferred.
+ */
+
+.wx {
+  container: wx / inline-size;
+  --wx-glow-a: rgb(76 201 240 / 0.14);
+  --wx-glow-b: rgb(128 144 255 / 0.12);
+  --wx-base: linear-gradient(180deg, #0a111d 0%, var(--surface-solid) 70%);
+  --wx-rain: rgb(180 210 255 / 0.1);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 600px;
+  color: var(--text);
+  font-size: 14.5px;
+}
+
+:root[data-theme='light'] .wx {
+  --wx-base: linear-gradient(180deg, #eaf4fb 0%, var(--surface-solid) 70%);
+  --wx-rain: rgb(30 70 130 / 0.1);
+}
+
+/* Weather moods (dark theme values; light theme mostly reuses them). */
+.wx[data-weather='clear'] {
+  --wx-glow-a: rgb(255 196 92 / 0.22);
+  --wx-glow-b: rgb(76 201 240 / 0.14);
+}
+
+.wx[data-weather='partly'] {
+  --wx-glow-a: rgb(255 196 92 / 0.13);
+  --wx-glow-b: rgb(148 163 184 / 0.16);
+}
+
+.wx[data-weather='cloudy'],
+.wx[data-weather='fog'] {
+  --wx-glow-a: rgb(148 163 184 / 0.16);
+  --wx-glow-b: rgb(100 116 139 / 0.14);
+}
+
+.wx[data-weather='rain'] {
+  --wx-glow-a: rgb(56 189 248 / 0.15);
+  --wx-glow-b: rgb(71 85 105 / 0.22);
+}
+
+.wx[data-weather='storm'] {
+  --wx-glow-a: rgb(129 140 248 / 0.18);
+  --wx-glow-b: rgb(30 41 59 / 0.45);
+}
+
+.wx[data-weather='snow'] {
+  --wx-glow-a: rgb(226 232 240 / 0.18);
+  --wx-glow-b: rgb(147 197 253 / 0.14);
+}
+
+.wx[data-weather='clear'][data-time='night'] {
+  --wx-glow-a: rgb(129 140 248 / 0.2);
+  --wx-glow-b: rgb(76 201 240 / 0.08);
+}
+
+:root[data-theme='light'] .wx[data-weather='clear'] {
+  --wx-glow-a: rgb(255 180 60 / 0.28);
+}
+
+:root[data-theme='light'] .wx[data-weather='cloudy'],
+:root[data-theme='light'] .wx[data-weather='fog'],
+:root[data-theme='light'] .wx[data-weather='storm'] {
+  --wx-glow-b: rgb(100 116 139 / 0.18);
+}
+
+.wx__sky {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(55% 50% at 88% 0%, var(--wx-glow-a), transparent 72%),
+    radial-gradient(60% 55% at 0% 100%, var(--wx-glow-b), transparent 70%),
+    var(--wx-base);
+  transition: background 0.8s ease;
+}
+
+/* Rain and snow overlays: very light, and they fade out towards the bottom. */
+.wx__effects {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease;
+  mask-image: linear-gradient(to bottom, #000, transparent 75%);
+}
+
+.wx[data-weather='rain'] .wx__effects,
+.wx[data-weather='storm'] .wx__effects {
+  opacity: 1;
+  background-image: repeating-linear-gradient(
+    105deg,
+    transparent 0 26px,
+    var(--wx-rain) 26px 27px,
+    transparent 27px 60px
+  );
+  background-size: 240px 240px;
+  animation: wx-rain 1.4s linear infinite;
+}
+
+.wx[data-weather='snow'] .wx__effects {
+  opacity: 0.8;
+  background-image:
+    radial-gradient(circle, rgb(255 255 255 / 0.5) 1px, transparent 1.5px),
+    radial-gradient(circle, rgb(255 255 255 / 0.35) 1px, transparent 1.5px);
+  background-size:
+    90px 90px,
+    140px 140px;
+  background-position:
+    0 0,
+    40px 60px;
+  animation: wx-snow 14s linear infinite;
+}
+
+.wx[data-weather='fog'] .wx__effects {
+  opacity: 1;
+  background: linear-gradient(180deg, rgb(148 163 184 / 0.12), transparent 60%);
+}
+
+@keyframes wx-rain {
+  to {
+    background-position: -60px 240px;
+  }
+}
+
+@keyframes wx-snow {
+  to {
+    background-position:
+      30px 90px,
+      70px 200px;
+  }
+}
+
+.wx__inner {
+  display: grid;
+  gap: 16px;
+  max-width: 980px;
+  margin-inline: auto;
+  padding: clamp(16px, 3vw, 36px);
+}
+
+/* ---------- Header ---------- */
+
+.wx__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.wx__logo {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 35%, transparent);
+  background: var(--project-accent-soft);
+  color: var(--project-accent);
+}
+
+.wx__title {
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+}
+
+.wx__subtitle {
+  font-size: 13px;
+  color: var(--text-3);
+}
+
+/* ---------- Glass cards ---------- */
+
+.wx-card {
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface-solid) 58%, transparent);
+  box-shadow: var(--shadow-md), var(--highlight);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  backdrop-filter: blur(16px) saturate(140%);
+}
+
+/* ---------- Buttons ---------- */
+
+.wx-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.wx-btn:disabled {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+.wx-btn--primary {
+  background: var(--project-accent);
+  color: #03202b;
+}
+
+:root[data-theme='light'] .wx-btn--primary {
+  color: #ffffff;
+}
+
+.wx-btn--primary:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--project-accent) 88%, var(--text));
+}
+
+.wx-btn--ghost {
+  background: var(--surface-2);
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+
+.wx-btn--ghost:hover {
+  background: var(--surface-3);
+}
+
+.wx-spin {
+  animation: spin 0.9s linear infinite;
+}
+
+/* ---------- Search ---------- */
+
+.wx-search {
+  display: grid;
+  gap: 10px;
+}
+
+.wx-search__form {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+  border-radius: 16px;
+  border: 1px solid var(--border-strong);
+  background: color-mix(in srgb, var(--surface-solid) 60%, transparent);
+  box-shadow: var(--shadow-sm);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.wx-search__form:focus-within {
+  border-color: var(--project-accent);
+  box-shadow: 0 0 0 3px var(--project-accent-soft);
+}
+
+.wx-search__icon {
+  flex-shrink: 0;
+  margin-left: 8px;
+  color: var(--text-3);
+}
+
+.wx-search__input {
+  flex: 1;
+  min-width: 0;
+  min-height: 40px;
+  padding: 0 4px;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font-size: 15px;
+}
+
+.wx-search__input::placeholder {
+  color: var(--text-3);
+}
+
+.wx-search__input:focus-visible {
+  outline: none;
+}
+
+.wx-search__input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.wx-search__message {
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-size: 13.5px;
+  color: var(--text-2);
+}
+
+.wx-search__message--error {
+  border-color: color-mix(in srgb, var(--danger) 35%, transparent);
+  color: var(--danger);
+}
+
+.wx-quick {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.wx-quick__label {
+  margin-right: 2px;
+  font-size: 13px;
+  color: var(--text-3);
+}
+
+.wx-chip {
+  min-height: 30px;
+  padding: 0 12px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-2);
+  font-size: 13px;
+  font-weight: 500;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.wx-chip:hover:not(:disabled) {
+  color: var(--text);
+  border-color: var(--border-strong);
+  background: var(--surface-2);
+}
+
+.wx-results {
+  display: grid;
+  gap: 4px;
+  padding: 6px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface-solid) 70%, transparent);
+  box-shadow: var(--shadow-md);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  animation: wx-fade-in 0.25s var(--ease-out) both;
+}
+
+.wx-results__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-3);
+  text-align: left;
+  transition: background-color 0.15s ease;
+}
+
+.wx-results__item:hover {
+  background: var(--surface-2);
+}
+
+.wx-results__text {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+}
+
+.wx-results__name {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.wx-results__place {
+  font-size: 12.5px;
+  color: var(--text-3);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.wx-results__code {
+  padding: 2px 7px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-2);
+}
+
+/* ---------- Favorites ---------- */
+
+.wx-favorites {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+
+.wx-favorites__title {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-3);
+}
+
+.wx-favorites__title svg {
+  color: var(--warning);
+  fill: currentColor;
+}
+
+.wx-favorites__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.wx-favorite {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.wx-favorite:hover {
+  border-color: var(--border-strong);
+}
+
+.wx-favorite.is-selected {
+  border-color: color-mix(in srgb, var(--project-accent) 45%, transparent);
+  background: var(--project-accent-soft);
+}
+
+.wx-favorite__select {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 30px;
+  padding: 0 4px 0 12px;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: transparent;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.wx-favorite__code {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--text-3);
+}
+
+.wx-favorite__remove {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  margin-right: 2px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-3);
+}
+
+.wx-favorite__remove:hover {
+  color: var(--text);
+  background: var(--surface-2);
+}
+
+/* ---------- Content layout ---------- */
+
+.wx__grid,
+.wx-loading {
+  display: grid;
+  gap: 16px;
+  animation: wx-fade-in 0.4s var(--ease-out) both;
+}
+
+@container wx (min-width: 760px) {
+  .wx__grid,
+  .wx-loading {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+@keyframes wx-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+/* ---------- Current weather ---------- */
+
+.wx-current {
+  display: grid;
+  gap: 18px;
+  padding: clamp(18px, 3vw, 24px);
+}
+
+.wx-current__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.wx-current__city {
+  font-size: 1.45rem;
+  letter-spacing: -0.03em;
+}
+
+.wx-current__place {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 2px;
+  font-size: 13px;
+  color: var(--text-3);
+}
+
+.wx-fav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text-2);
+  font-size: 13px;
+  font-weight: 500;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.wx-fav-btn:hover {
+  color: var(--text);
+  background: var(--surface-2);
+}
+
+.wx-fav-btn.is-active {
+  border-color: color-mix(in srgb, var(--warning) 45%, transparent);
+  background: var(--warning-soft);
+  color: var(--text);
+}
+
+.wx-fav-btn.is-active svg {
+  color: var(--warning);
+  fill: currentColor;
+}
+
+.wx-current__main {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.wx-current__icon {
+  flex-shrink: 0;
+  color: var(--project-accent);
+  filter: drop-shadow(0 8px 24px var(--wx-glow-a));
+}
+
+.wx[data-weather='clear'][data-time='day'] .wx-current__icon,
+.wx[data-weather='partly'][data-time='day'] .wx-current__icon {
+  color: #f5b53d;
+}
+
+:root[data-theme='light'] .wx[data-weather='clear'][data-time='day'] .wx-current__icon,
+:root[data-theme='light'] .wx[data-weather='partly'][data-time='day'] .wx-current__icon {
+  color: #d98a00;
+}
+
+.wx-current__temp {
+  display: flex;
+  align-items: flex-start;
+  font-size: clamp(3rem, 9cqi, 4.2rem);
+  font-weight: 600;
+  letter-spacing: -0.05em;
+  line-height: 1;
+}
+
+.wx-current__unit {
+  margin-top: 0.3em;
+  margin-left: 2px;
+  font-size: 0.34em;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--text-2);
+}
+
+.wx-current__condition {
+  margin-top: 6px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.wx-current__range {
+  font-size: 13px;
+  color: var(--text-3);
+}
+
+.wx-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.wx-stat {
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.wx-stat dt {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+.wx-stat dd {
+  margin-top: 4px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.wx-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 30%, transparent);
+  background: var(--project-accent-soft);
+  font-size: 13.5px;
+  color: var(--text-2);
+}
+
+.wx-note svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--project-accent);
+}
+
+.wx-note strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.wx-current__updated {
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+/* ---------- Forecast ---------- */
+
+.wx-forecast {
+  container: wx-forecast / inline-size;
+  padding: clamp(18px, 3vw, 24px);
+}
+
+.wx-forecast__title {
+  margin-bottom: 8px;
+  font-size: 15px;
+}
+
+.wx-forecast__list {
+  display: grid;
+}
+
+/* Two rows on narrow cards, one row when the forecast card is wide enough. */
+.wx-day {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) auto;
+  grid-template-areas:
+    'name condition rain'
+    'temps temps temps';
+  align-items: center;
+  gap: 8px 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.wx-day:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+@container wx-forecast (min-width: 520px) {
+  .wx-day {
+    grid-template-columns: 58px minmax(0, 1fr) 52px minmax(130px, 0.9fr);
+    grid-template-areas: 'name condition rain temps';
+  }
+}
+
+.wx-day__name {
+  grid-area: name;
+  display: grid;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.wx-day__date {
+  font-size: 11.5px;
+  font-weight: 400;
+  color: var(--text-3);
+}
+
+.wx-day__condition {
+  grid-area: condition;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  color: var(--text-2);
+}
+
+.wx-day__condition svg {
+  flex-shrink: 0;
+  color: var(--project-accent);
+}
+
+.wx-day__label {
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+/* One-row layout: keep labels on a single line. */
+@container wx-forecast (min-width: 520px) {
+  .wx-day__label {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+
+.wx-day__rain {
+  grid-area: rain;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-3);
+}
+
+.wx-day__temps {
+  grid-area: temps;
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr) 30px;
+  align-items: center;
+  gap: 8px;
+  font-variant-numeric: tabular-nums;
+}
+
+.wx-day__min {
+  text-align: right;
+  font-size: 13px;
+  color: var(--text-3);
+}
+
+.wx-day__max {
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.wx-day__bar {
+  position: relative;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--surface-3);
+}
+
+.wx-day__bar span {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--project-accent), #f5b53d);
+}
+
+/* ---------- States ---------- */
+
+.wx-state {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: clamp(36px, 7vw, 64px) 24px;
+  text-align: center;
+}
+
+.wx-state__icon {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 8px;
+  border-radius: 18px;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 35%, transparent);
+  background: var(--project-accent-soft);
+  color: var(--project-accent);
+}
+
+.wx-state--error .wx-state__icon {
+  border-color: color-mix(in srgb, var(--danger) 35%, transparent);
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.wx-state__title {
+  font-size: 17px;
+}
+
+.wx-state__text {
+  max-width: 44ch;
+  margin-bottom: 8px;
+  color: var(--text-2);
+}
+
+.wx-skeleton-card {
+  display: grid;
+  gap: 10px;
+  padding: 22px;
+}
+
+.wx-skeleton {
+  display: block;
+  height: 12px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--surface-2) 0%, var(--surface-3) 50%, var(--surface-2) 100%);
+  background-size: 200% 100%;
+  animation: wx-shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes wx-shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.wx__credit {
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+.wx__credit a {
+  border-radius: 4px;
+  color: var(--text-2);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.wx__credit a:hover {
+  color: var(--text);
+}

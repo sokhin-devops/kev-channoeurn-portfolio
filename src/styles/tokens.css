@@ -1,0 +1,164 @@
+/*
+ * Design tokens.
+ * Dark is the default theme. <html data-theme="light"> switches to the light values.
+ * All colours in the app come from these variables.
+ */
+
+:root {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+  --radius-full: 999px;
+
+  --container: 1140px;
+  --gutter: clamp(16px, 4vw, 32px);
+  --nav-height: 64px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* ---------- Dark theme (default) ---------- */
+  color-scheme: dark;
+  --bg: #07080a;
+  --bg-soft: #0b0c10;
+  --surface: rgb(255 255 255 / 0.028);
+  --surface-2: rgb(255 255 255 / 0.05);
+  --surface-3: rgb(255 255 255 / 0.08);
+  --surface-solid: #101116;
+  --surface-raised: #14151b;
+  --glass: rgb(10 11 14 / 0.66);
+  --glass-strong: rgb(16 17 22 / 0.82);
+  --border: rgb(255 255 255 / 0.075);
+  --border-strong: rgb(255 255 255 / 0.13);
+  --border-accent: rgb(128 144 255 / 0.35);
+
+  --text: #f3f4f6;
+  --text-2: #a3a7b1;
+  --text-3: #878b95;
+  --heading-gradient: linear-gradient(180deg, #ffffff 25%, rgb(255 255 255 / 0.66));
+
+  --accent: #8090ff;
+  --accent-strong: #6a7bff;
+  --accent-text: #aab4ff;
+  --accent-soft: rgb(128 144 255 / 0.12);
+  --accent-gradient: linear-gradient(92deg, #aab4ff 0%, #8fd8ff 55%, #c3b3ff 100%);
+
+  --btn-primary-bg: #f3f4f6;
+  --btn-primary-hover: #ffffff;
+  --btn-primary-text: #0a0b0e;
+
+  --success: #4ade80;
+  --success-soft: rgb(74 222 128 / 0.12);
+  --warning: #fbbf24;
+  --warning-soft: rgb(251 191 36 / 0.12);
+  --danger: #f87171;
+  --danger-soft: rgb(248 113 113 / 0.12);
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.35);
+  --shadow-md: 0 10px 30px -12px rgb(0 0 0 / 0.55);
+  --shadow-lg: 0 30px 80px -24px rgb(0 0 0 / 0.75);
+  --highlight: inset 0 1px 0 rgb(255 255 255 / 0.05);
+  --spotlight: rgb(160 172 255 / 0.09);
+
+  --orb-one: rgb(92 104 255 / 0.3);
+  --orb-two: rgb(56 189 248 / 0.13);
+  --orb-three: rgb(147 107 255 / 0.15);
+  --grid-line: rgb(255 255 255 / 0.035);
+  --noise-opacity: 0.04;
+
+  --focus-ring: #aab4ff;
+  --selection: rgb(128 144 255 / 0.35);
+  --backdrop: rgb(3 4 6 / 0.62);
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --bg: #f7f8fa;
+  --bg-soft: #f1f3f6;
+  --surface: rgb(255 255 255 / 0.6);
+  --surface-2: rgb(255 255 255 / 0.85);
+  --surface-3: rgb(236 238 243 / 0.95);
+  --surface-solid: #ffffff;
+  --surface-raised: #ffffff;
+  --glass: rgb(247 248 250 / 0.72);
+  --glass-strong: rgb(255 255 255 / 0.88);
+  --border: rgb(16 20 36 / 0.08);
+  --border-strong: rgb(16 20 36 / 0.14);
+  --border-accent: rgb(79 93 234 / 0.35);
+
+  --text: #0d0f14;
+  --text-2: #4a4f5b;
+  --text-3: #636874;
+  --heading-gradient: linear-gradient(180deg, #0d0f14 30%, rgb(13 15 20 / 0.72));
+
+  --accent: #4f5dea;
+  --accent-strong: #3f4dd8;
+  --accent-text: #3f4bd0;
+  --accent-soft: rgb(79 93 234 / 0.09);
+  --accent-gradient: linear-gradient(92deg, #4350d8 0%, #1f7fb8 55%, #6b4fd8 100%);
+
+  --btn-primary-bg: #0d0f14;
+  --btn-primary-hover: #22252e;
+  --btn-primary-text: #ffffff;
+
+  --success: #15803d;
+  --success-soft: rgb(21 128 61 / 0.1);
+  --warning: #b45309;
+  --warning-soft: rgb(180 83 9 / 0.1);
+  --danger: #c2410c;
+  --danger-soft: rgb(194 65 12 / 0.09);
+
+  --shadow-sm: 0 1px 2px rgb(16 20 36 / 0.06);
+  --shadow-md: 0 10px 30px -12px rgb(16 20 36 / 0.14);
+  --shadow-lg: 0 30px 70px -28px rgb(16 20 36 / 0.22);
+  --highlight: inset 0 1px 0 rgb(255 255 255 / 0.9);
+  --spotlight: rgb(79 93 234 / 0.06);
+
+  --orb-one: rgb(120 132 255 / 0.22);
+  --orb-two: rgb(56 189 248 / 0.14);
+  --orb-three: rgb(186 150 255 / 0.16);
+  --grid-line: rgb(16 20 36 / 0.045);
+  --noise-opacity: 0.025;
+
+  --focus-ring: #4f5dea;
+  --selection: rgb(79 93 234 / 0.2);
+  --backdrop: rgb(16 20 36 / 0.35);
+}
+
+/* Per-project accent colours (used on project cards, detail pages and demo apps). */
+[data-accent='violet'] {
+  --project-accent: #a08cff;
+  --project-accent-soft: rgb(160 140 255 / 0.14);
+  --project-glow: rgb(160 140 255 / 0.22);
+}
+[data-accent='blue'] {
+  --project-accent: #5b9bff;
+  --project-accent-soft: rgb(91 155 255 / 0.14);
+  --project-glow: rgb(91 155 255 / 0.22);
+}
+[data-accent='cyan'] {
+  --project-accent: #4cc9f0;
+  --project-accent-soft: rgb(76 201 240 / 0.14);
+  --project-glow: rgb(76 201 240 / 0.2);
+}
+:root[data-theme='light'] [data-accent='violet'] {
+  --project-accent: #6d4fe0;
+  --project-accent-soft: rgb(109 79 224 / 0.1);
+  --project-glow: rgb(140 110 255 / 0.18);
+}
+:root[data-theme='light'] [data-accent='blue'] {
+  --project-accent: #2463d1;
+  --project-accent-soft: rgb(36 99 209 / 0.09);
+  --project-glow: rgb(80 140 255 / 0.18);
+}
+:root[data-theme='light'] [data-accent='cyan'] {
+  --project-accent: #0a7ea4;
+  --project-accent-soft: rgb(10 126 164 / 0.09);
+  --project-glow: rgb(56 189 248 / 0.18);
+}

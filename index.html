@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kev Channoeurn | Front-End Developer</title>
+    <meta
+      name="description"
+      content="Kev Channoeurn is a Computer Science student at the Royal University of Phnom Penh and a Front-End Developer building responsive, user-friendly web apps with React. Open to internship opportunities."
+    />
+    <meta name="author" content="Kev Channoeurn" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#07080a" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Open Graph (add og:url and og:image once the site has a real public URL) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Kev Channoeurn | Front-End Developer" />
+    <meta
+      property="og:description"
+      content="Computer Science student and Front-End Developer building practical React projects. Open to internship opportunities."
+    />
+    <meta property="og:site_name" content="Kev Channoeurn" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Kev Channoeurn | Front-End Developer" />
+    <meta
+      name="twitter:description"
+      content="Computer Science student and Front-End Developer building practical React projects."
+    />
+
+    <!-- Apply the saved theme before React loads, to avoid a flash of the wrong theme. -->
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('kev-portfolio:theme')
+          var mode = saved === 'light' || saved === 'dark' || saved === 'system' ? saved : 'dark'
+          var resolved =
+            mode === 'system'
+              ? window.matchMedia('(prefers-color-scheme: light)').matches
+                ? 'light'
+                : 'dark'
+              : mode
+          document.documentElement.dataset.theme = resolved
+        } catch (error) {
+          document.documentElement.dataset.theme = 'dark'
+        }
+      })()
+    </script>
+  </head>
+  <body>
+    <noscript>This portfolio needs JavaScript enabled to run.</noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

@@ -1,0 +1,190 @@
+/* Reset, typography and accessibility helpers. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  background: var(--bg);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  font-feature-settings: 'cv11', 'ss01', 'ss03';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body.menu-open {
+  overflow: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+code,
+pre,
+kbd,
+samp {
+  font-family: var(--font-mono);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+::selection {
+  background: var(--selection);
+}
+
+/* Visible keyboard focus everywhere. */
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+main:focus {
+  outline: none;
+}
+
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 200;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  font-size: 14px;
+  font-weight: 600;
+  transform: translateY(-150%);
+  transition: transform 0.2s var(--ease-out);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+.text-gradient {
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Smooth colour changes while the theme switches (class added for 400ms). */
+.theme-transition,
+.theme-transition *,
+.theme-transition *::before,
+.theme-transition *::after {
+  transition:
+    background-color 350ms ease,
+    border-color 350ms ease,
+    color 350ms ease,
+    fill 350ms ease,
+    stroke 350ms ease,
+    box-shadow 350ms ease !important;
+  transition-delay: 0s !important;
+}
+
+/* Respect the user's reduced-motion setting. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

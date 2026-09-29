@@ -1,0 +1,8 @@
+/* Global styles, imported once in main.jsx. Demo apps import their own CSS. */
+@import './tokens.css';
+@import './base.css';
+@import './layout.css';
+@import './components.css';
+@import './sections.css';
+@import './project-cards.css';
+@import './project-pages.css';
