@@ -1,9 +1,12 @@
 import { ArrowRight } from 'lucide-react'
+import { Fragment } from 'react'
 import portrait from '../assets/kev-channoeurn.jpg'
 import { Button } from '../components/ui/Button'
 import { HandUnderline } from '../components/ui/HandUnderline'
 import { Reveal } from '../components/ui/Reveal'
 import { profile } from '../data/profile'
+
+const headingWords = ['Hi,', "I'm", ...profile.name.split(' ')]
 
 export function Hero() {
   return (
@@ -15,9 +18,17 @@ export function Hero() {
             {profile.availability}
           </Reveal>
 
-          <Reveal as="h1" delay={1} id="hero-title" className="hero__title">
-            Hi, I&apos;m {profile.name}
-          </Reveal>
+          {/* Each word fades and sharpens in, one after another. */}
+          <h1 id="hero-title" className="hero__title">
+            {headingWords.map((word, index) => (
+              <Fragment key={word}>
+                {index > 0 && ' '}
+                <span className="hero__word" style={{ '--word': index }}>
+                  {word}
+                </span>
+              </Fragment>
+            ))}
+          </h1>
 
           <Reveal as="p" delay={2} className="hero__role">
             <span className="hero__role-text">

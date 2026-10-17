@@ -73,6 +73,7 @@
   --grid-line: rgb(255 255 255 / 0.035);
   --noise-opacity: 0.04;
 
+  --spot-color: #b9c2ff;
   --focus-ring: #aab4ff;
   --selection: rgb(128 144 255 / 0.35);
   --backdrop: rgb(3 4 6 / 0.62);
@@ -127,6 +128,7 @@
   --grid-line: rgb(16 20 36 / 0.045);
   --noise-opacity: 0.025;
 
+  --spot-color: #5f6cf0;
   --focus-ring: #4f5dea;
   --selection: rgb(79 93 234 / 0.2);
   --backdrop: rgb(16 20 36 / 0.35);

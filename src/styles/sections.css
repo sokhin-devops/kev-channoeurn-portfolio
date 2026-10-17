@@ -33,7 +33,13 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-size: 14px;
+  padding: 6px 14px 6px 12px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  font-size: 13.5px;
   color: var(--text-2);
 }
 
@@ -63,6 +69,20 @@
   100% {
     transform: scale(2.6);
     opacity: 0;
+  }
+}
+
+.hero__word {
+  display: inline-block;
+  animation: word-in 0.9s var(--ease-out) both;
+  animation-delay: calc(0.15s + var(--word) * 0.08s);
+}
+
+@keyframes word-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.35em);
+    filter: blur(8px);
   }
 }
 
@@ -157,7 +177,15 @@
   pointer-events: none;
 }
 
+/* An angle that can be animated, used by the rotating ring. */
+@property --ring-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
 .portrait {
+  position: relative;
   width: clamp(240px, 25vw, 330px);
   padding: 6px;
   border-radius: 30px;
@@ -171,6 +199,48 @@
 
 .portrait:hover {
   transform: translateY(-4px);
+}
+
+/* A slow gradient light travelling around the frame. */
+.portrait::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--ring-angle),
+    transparent 0deg,
+    var(--accent) 60deg,
+    #5ec8f0 110deg,
+    transparent 170deg,
+    transparent 360deg
+  );
+  /* Keep only the 1.5px edge: the padding box minus the content box. */
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0.85;
+  animation: ring-spin 9s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes ring-spin {
+  to {
+    --ring-angle: 360deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portrait::before {
+    animation: none;
+    --ring-angle: 200deg;
+  }
 }
 
 .portrait img {

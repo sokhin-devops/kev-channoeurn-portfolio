@@ -1,5 +1,5 @@
 import { Menu, X } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { navItems, sectionIds } from '../../data/navigation'
 import { profile } from '../../data/profile'
@@ -15,6 +15,8 @@ export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(() => window.scrollY > 8)
   const menuButtonRef = useRef(null)
+  const navLinksRef = useRef(null)
+  const indicatorRef = useRef(null)
 
   const routeSection = pathname === '/' ? 'home' : pathname.slice(1)
   const isHomePage = spyIds.includes(routeSection)
@@ -22,6 +24,32 @@ export function Navbar() {
 
   // On the home page the scroll position decides the active link.
   const activeId = isHomePage ? (spiedSection ?? routeSection) : null
+
+  // Slide one shared highlight under the active link (moved directly, no re-render).
+  useLayoutEffect(() => {
+    const container = navLinksRef.current
+    const indicator = indicatorRef.current
+    if (!container || !indicator) return
+
+    const update = () => {
+      const activeLink = container.querySelector('.nav-link.is-active')
+      if (!activeLink) {
+        indicator.classList.remove('is-visible')
+        return
+      }
+      indicator.style.width = `${activeLink.offsetWidth}px`
+      indicator.style.height = `${activeLink.offsetHeight}px`
+      indicator.style.transform = `translate(${activeLink.offsetLeft}px, ${activeLink.offsetTop}px)`
+      indicator.classList.add('is-visible')
+      // Only animate after the first position is set, so it doesn't slide in from the left.
+      if (!indicator.dataset.ready) requestAnimationFrame(() => (indicator.dataset.ready = 'true'))
+    }
+
+    update()
+    const observer = new ResizeObserver(update)
+    observer.observe(container)
+    return () => observer.disconnect()
+  }, [activeId])
 
   // Add a glass background once the page is scrolled.
   useEffect(() => {
@@ -64,19 +92,22 @@ export function Navbar() {
             {profile.name}
           </Link>
 
-          <ul className="nav-links">
-            {navItems.map((item) => (
-              <li key={item.id}>
-                <Link
-                  to={item.path}
-                  className={cx('nav-link', activeId === item.id && 'is-active')}
-                  aria-current={activeId === item.id ? 'page' : undefined}
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <div className="nav-links" ref={navLinksRef}>
+            <span className="nav-indicator" ref={indicatorRef} aria-hidden="true" />
+            <ul className="nav-links__list">
+              {navItems.map((item) => (
+                <li key={item.id}>
+                  <Link
+                    to={item.path}
+                    className={cx('nav-link', activeId === item.id && 'is-active')}
+                    aria-current={activeId === item.id ? 'page' : undefined}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
 
           <div className="navbar__actions">
             <ThemeSwitcher className="navbar__theme" />

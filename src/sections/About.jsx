@@ -13,7 +13,7 @@ export function About() {
 
       <dl className="tiles tiles--facts">
         {aboutFacts.map((fact, index) => (
-          <Reveal key={fact.label} delay={index} className="tile">
+          <Reveal key={fact.label} delay={index} className="tile" data-spotlight>
             <dt className="tile__label">{fact.label}</dt>
             <dd className="tile__value">{fact.value}</dd>
           </Reveal>

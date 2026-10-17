@@ -7,7 +7,7 @@ export function Skills() {
     <SplitSection id="skills" title="Skills">
       <div className="tiles tiles--skills">
         {skillGroups.map((group, index) => (
-          <Reveal key={group.title} delay={index} className="tile">
+          <Reveal key={group.title} delay={index} className="tile" data-spotlight>
             <h3 className="tile__label">{group.title}</h3>
             <ul className="chips">
               {group.skills.map((skill) => (

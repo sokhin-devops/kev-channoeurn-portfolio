@@ -246,6 +246,7 @@
 }
 
 .tile {
+  position: relative;
   min-width: 0;
   padding: 18px 20px;
   border-radius: 16px;
@@ -392,6 +393,44 @@
   margin-top: 8px;
   font-size: 13.5px;
   color: var(--text-3);
+}
+
+/* ---------- Spotlight: a soft light on the border that follows the pointer ---------- */
+
+[data-spotlight]::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  padding: 1px;
+  border-radius: inherit;
+  background: radial-gradient(
+    260px circle at var(--spot-x, 50%) var(--spot-y, 0%),
+    var(--spot-color),
+    transparent 70%
+  );
+  /* Keep only a 1px edge. */
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+[data-spotlight]:hover::after {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  [data-spotlight]::after {
+    display: none;
+  }
 }
 
 /* ---------- Reveal animation ---------- */

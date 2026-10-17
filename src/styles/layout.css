@@ -122,7 +122,42 @@
   display: none;
 }
 
+.nav-links {
+  position: relative;
+}
+
+.nav-links__list {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+/* One highlight that slides to the active link. */
+.nav-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: var(--radius-full);
+  background: var(--surface-3);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.nav-indicator.is-visible {
+  opacity: 1;
+}
+
+.nav-indicator[data-ready] {
+  transition:
+    transform 0.45s var(--ease-out),
+    width 0.45s var(--ease-out),
+    opacity 0.25s ease;
+}
+
 .nav-link {
+  position: relative;
+  z-index: 1;
   display: block;
   padding: 7px 13px;
   border-radius: var(--radius-full);
@@ -140,7 +175,6 @@
 
 .nav-link.is-active {
   color: var(--text);
-  background: var(--surface-3);
 }
 
 .navbar__actions {
@@ -170,9 +204,7 @@
 
 @media (min-width: 1024px) {
   .nav-links {
-    display: flex;
-    align-items: center;
-    gap: 2px;
+    display: block;
   }
 
   .icon-btn.menu-toggle {
