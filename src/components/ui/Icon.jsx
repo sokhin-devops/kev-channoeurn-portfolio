@@ -8,6 +8,8 @@ import {
   LayoutTemplate,
   Lightbulb,
   MapPin,
+  MonitorSmartphone,
+  Network,
   Puzzle,
   RefreshCw,
   Server,
@@ -18,6 +20,7 @@ import {
 
 // Maps the icon names used in src/data/profile.js to Lucide icons.
 const icons = {
+  api: Network,
   code: Code,
   compass: Compass,
   database: Database,
@@ -29,6 +32,7 @@ const icons = {
   'map-pin': MapPin,
   puzzle: Puzzle,
   refresh: RefreshCw,
+  responsive: MonitorSmartphone,
   server: Server,
   target: Target,
   users: Users,

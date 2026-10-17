@@ -50,15 +50,21 @@ export const interests = [
 ]
 
 // `logo` refers to a brand logo in src/data/techIcons.js; `icon` is used when there is no logo.
+// `columns` makes a group span the full width with that many skills per row on large screens.
 export const skillGroups = [
   {
     title: 'Frontend',
     icon: 'layout',
+    columns: 4,
     skills: [
       { name: 'HTML', logo: 'html' },
       { name: 'CSS', logo: 'css' },
       { name: 'JavaScript', logo: 'javascript' },
       { name: 'React.js', logo: 'react' },
+      { name: 'React Router', logo: 'reactrouter' },
+      { name: 'Tailwind CSS', logo: 'tailwind' },
+      { name: 'Bootstrap', logo: 'bootstrap' },
+      { name: 'Responsive design', icon: 'responsive' },
     ],
   },
   {
@@ -67,6 +73,7 @@ export const skillGroups = [
     skills: [
       { name: 'PHP', logo: 'php' },
       { name: 'Postman', logo: 'postman' },
+      { name: 'REST APIs', icon: 'api' },
     ],
   },
   {
@@ -80,10 +87,13 @@ export const skillGroups = [
   {
     title: 'Tools',
     icon: 'wrench',
+    columns: 5,
     skills: [
       { name: 'Git', logo: 'git' },
       { name: 'GitHub', logo: 'github' },
       { name: 'VS Code', icon: 'code' },
+      { name: 'Vite', logo: 'vite' },
+      { name: 'Figma', logo: 'figma' },
     ],
   },
 ]

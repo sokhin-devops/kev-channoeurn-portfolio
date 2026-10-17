@@ -4,6 +4,7 @@ import { SplitSection } from '../components/ui/SplitSection'
 import { TechLogo } from '../components/ui/TechLogo'
 import { skillGroups, softSkills } from '../data/profile'
 import { techIcons } from '../data/techIcons'
+import { cx } from '../utils/cx'
 
 // GitHub's brand colour is near-black, so it uses the text colour on hover instead.
 function brandColor(logo) {
@@ -16,7 +17,13 @@ export function Skills() {
     <SplitSection id="skills" title="Skills">
       <div className="stack-grid">
         {skillGroups.map((group, index) => (
-          <Reveal key={group.title} delay={index} className="tile stack-group" data-spotlight>
+          <Reveal
+            key={group.title}
+            delay={index}
+            className={cx('tile stack-group', group.columns && 'stack-group--wide')}
+            style={group.columns ? { '--columns': group.columns } : undefined}
+            data-spotlight
+          >
             <h3 className="stack-group__title">
               <Icon name={group.icon} size={15} />
               {group.title}
@@ -34,7 +41,7 @@ export function Skills() {
           </Reveal>
         ))}
 
-        <Reveal delay={4} className="tile stack-group" data-spotlight>
+        <Reveal delay={4} className="tile stack-group stack-group--wide" data-spotlight>
           <h3 className="stack-group__title">
             <Icon name="users" size={15} />
             Soft skills
