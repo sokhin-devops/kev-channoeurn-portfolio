@@ -1,0 +1,166 @@
+/*
+ * Motion: one consistent 3D system for the whole portfolio.
+ *
+ * 1. Enter:  blocks rise into place with a small 3D tilt (.reveal).
+ * 2. Hover:  cards tilt towards the pointer by the same depth, their content floats
+ *            a little above the surface, and a light follows the border
+ *            ([data-tilt] and [data-spotlight], driven by usePointerEffects).
+ * 3. Scroll: the hero lays back as you scroll past it, and project screenshots
+ *            stand up as they come into view (scroll-driven, where supported).
+ *
+ * Everything is switched off for people who prefer reduced motion.
+ */
+
+:root {
+  --motion-hover: 0.5s;
+  --motion-reveal: 0.8s;
+  --perspective: 1000px;
+}
+
+/* ---------- 1. Enter: rise into place ---------- */
+
+.reveal {
+  opacity: 0;
+  transform: perspective(var(--perspective)) translateY(18px) rotateX(9deg);
+  transform-origin: 50% 0%;
+  filter: blur(6px);
+  transition:
+    opacity var(--motion-reveal) var(--ease-out),
+    transform var(--motion-reveal) var(--ease-out),
+    filter var(--motion-reveal) var(--ease-out);
+  transition-delay: calc(var(--reveal-delay, 0) * 80ms);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* ---------- 2. Hover: tilt towards the pointer ---------- */
+
+/* Tilt values come from usePointerEffects. When the class is removed, the card eases back to flat. */
+[data-tilt].is-tilting {
+  transform: perspective(var(--perspective)) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg))
+    translateZ(4px);
+}
+
+/* Inside a tile, the content floats above the surface, so it shifts slightly against it. */
+.tile[data-tilt] {
+  transform-style: preserve-3d;
+}
+
+.tile[data-tilt] > * {
+  transition: transform var(--motion-hover) var(--ease-out);
+}
+
+.tile[data-tilt].is-tilting > * {
+  transform: translateZ(14px);
+}
+
+/* Project cards: the screenshot drifts towards the pointer, as if it floats above the card. */
+.project-card.is-tilting .project-card__img {
+  translate: calc(var(--pointer-x, 0) * 14px) calc(var(--pointer-y, 0) * 10px);
+}
+
+/* Hero: the stage stays still and the portrait tilts in front of the globe. */
+.hero__stage[data-tilt].is-tilting {
+  transform: none;
+}
+
+.hero__stage.is-tilting .portrait {
+  transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateZ(12px);
+}
+
+/* ---------- Border light that follows the pointer ---------- */
+
+[data-spotlight]::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  padding: 1px;
+  border-radius: inherit;
+  background: radial-gradient(
+    260px circle at var(--spot-x, 50%) var(--spot-y, 0%),
+    var(--spot-color),
+    transparent 70%
+  );
+  /* Keep only a 1px edge. */
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+[data-spotlight]:hover::after {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  [data-spotlight]::after {
+    display: none;
+  }
+}
+
+/* ---------- 3. Scroll: linked to the scroll position ---------- */
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* Project screenshots stand up as they scroll into view. */
+    .project-card__img {
+      transform-origin: 50% 100%;
+      animation: stand-up linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 45%;
+    }
+
+    @keyframes stand-up {
+      from {
+        rotate: x 22deg;
+        scale: 0.94;
+        opacity: 0.55;
+      }
+    }
+
+    /* The hero lays back as you scroll past it (side-by-side layout only). */
+    @media (min-width: 900px) {
+      .hero__grid {
+        transform-origin: 50% 100%;
+        animation: lay-back linear both;
+        animation-timeline: view();
+        animation-range: exit 0% exit 75%;
+      }
+
+      @keyframes lay-back {
+        to {
+          transform: perspective(1200px) rotateX(18deg) scale(0.95);
+          opacity: 0.25;
+        }
+      }
+    }
+  }
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  [data-tilt].is-tilting,
+  .tile[data-tilt].is-tilting > *,
+  .hero__stage.is-tilting .portrait {
+    transform: none;
+  }
+}

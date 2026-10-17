@@ -231,6 +231,12 @@
 
 /* ---------- Tiles and chips ---------- */
 
+/* Grid cell that reveals on scroll; the card inside fills it and tilts on hover. */
+.card-cell {
+  display: grid;
+  min-width: 0;
+}
+
 .tile {
   position: relative;
   min-width: 0;
@@ -240,7 +246,8 @@
   background: var(--surface);
   transition:
     border-color 0.3s ease,
-    background-color 0.3s ease;
+    background-color 0.3s ease,
+    transform var(--motion-hover) var(--ease-out);
 }
 
 .tile:hover {
@@ -331,11 +338,6 @@
   gap: 4px;
 }
 
-.fact__term {
-  display: grid;
-  justify-items: start;
-}
-
 .fact__icon {
   display: grid;
   place-items: center;
@@ -369,7 +371,7 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .stack-group--wide {
+  .card-cell--wide {
     grid-column: 1 / -1;
   }
 }
@@ -393,7 +395,7 @@
 
 /* Wide groups use a fixed number of columns on large screens (set from the data). */
 @media (min-width: 1100px) {
-  .stack-group--wide .stack-list {
+  .card-cell--wide .stack-list {
     grid-template-columns: repeat(var(--columns, 4), minmax(0, 1fr));
   }
 }
@@ -515,72 +517,6 @@
   margin-top: 8px;
   font-size: 13.5px;
   color: var(--text-3);
-}
-
-/* ---------- Spotlight: a soft light on the border that follows the pointer ---------- */
-
-[data-spotlight]::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  padding: 1px;
-  border-radius: inherit;
-  background: radial-gradient(
-    260px circle at var(--spot-x, 50%) var(--spot-y, 0%),
-    var(--spot-color),
-    transparent 70%
-  );
-  /* Keep only a 1px edge. */
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  mask-composite: exclude;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.35s ease;
-}
-
-[data-spotlight]:hover::after {
-  opacity: 1;
-}
-
-@media (hover: none) {
-  [data-spotlight]::after {
-    display: none;
-  }
-}
-
-/* ---------- Reveal animation ---------- */
-
-.reveal {
-  opacity: 0;
-  transform: perspective(1000px) translateY(18px) rotateX(9deg);
-  transform-origin: 50% 0%;
-  filter: blur(6px);
-  transition:
-    opacity 0.8s var(--ease-out),
-    transform 0.8s var(--ease-out),
-    filter 0.8s var(--ease-out);
-  transition-delay: calc(var(--reveal-delay, 0) * 80ms);
-}
-
-.reveal.is-visible {
-  opacity: 1;
-  transform: none;
-  filter: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .reveal {
-    opacity: 1;
-    transform: none;
-    filter: none;
-  }
 }
 
 /* ---------- Loading placeholder for lazy apps ---------- */

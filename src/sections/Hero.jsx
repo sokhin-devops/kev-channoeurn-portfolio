@@ -6,13 +6,10 @@ import { HandUnderline } from '../components/ui/HandUnderline'
 import { ParticleGlobe } from '../components/ui/ParticleGlobe'
 import { Reveal } from '../components/ui/Reveal'
 import { profile } from '../data/profile'
-import { useTilt } from '../hooks/useTilt'
 
 const headingWords = ['Hi,', "I'm", ...profile.name.split(' ')]
 
 export function Hero() {
-  const stageRef = useTilt(7)
-
   return (
     <section id="home" className="hero" aria-labelledby="hero-title">
       <div className="container hero__grid">
@@ -57,7 +54,7 @@ export function Hero() {
 
         {/* 3D stage: a rotating particle globe behind a portrait that tilts towards the pointer. */}
         <Reveal delay={2} className="hero__photo">
-          <div className="hero__stage" ref={stageRef}>
+          <div className="hero__stage" data-tilt="22">
             <ParticleGlobe className="hero__globe" />
             <div className="portrait">
               <img

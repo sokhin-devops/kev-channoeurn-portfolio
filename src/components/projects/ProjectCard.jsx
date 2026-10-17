@@ -9,7 +9,7 @@ export function ProjectCard({ project }) {
   const alt = `Screenshot of the ${project.name} app`
 
   return (
-    <article className="project-card" data-accent={project.accent} data-spotlight>
+    <article className="project-card" data-accent={project.accent} data-tilt data-spotlight>
       <div className="project-card__shot">
         <img
           className="project-card__img project-card__img--dark"

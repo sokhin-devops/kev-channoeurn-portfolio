@@ -15,19 +15,19 @@ export function About() {
         {aboutParagraph}
       </Reveal>
 
-      <dl className="fact-grid">
+      <ul className="fact-grid">
         {aboutFacts.map((fact, index) => (
-          <Reveal key={fact.label} delay={index} className="tile fact" data-spotlight>
-            <dt className="fact__term">
+          <Reveal as="li" key={fact.label} delay={index} className="card-cell">
+            <div className="tile fact" data-tilt data-spotlight>
               <span className="fact__icon" aria-hidden="true">
                 <Icon name={fact.icon} size={17} />
               </span>
               <span className="tile__label">{fact.label}</span>
-            </dt>
-            <dd className="fact__value">{fact.value}</dd>
+              <span className="fact__value">{fact.value}</span>
+            </div>
           </Reveal>
         ))}
-      </dl>
+      </ul>
 
       <Reveal className="interests" delay={2}>
         <h3 className="tile__label">Interests</h3>

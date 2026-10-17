@@ -220,8 +220,6 @@
   box-shadow: var(--shadow-lg);
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
-  /* Tilt set by useTilt; it eases back to flat when the pointer leaves. */
-  transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
   transition:
     transform 0.6s var(--ease-out),
     box-shadow 0.6s var(--ease-out);

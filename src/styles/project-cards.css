@@ -9,7 +9,9 @@
 .project-card {
   position: relative;
   display: grid;
-  overflow: hidden;
+  /* clip (not hidden): clips the same, but doesn't become a scroll container,
+     so the screenshot's scroll animation follows the page. */
+  overflow: clip;
   border-radius: var(--radius-card);
   border: 1px solid var(--border);
   background: var(--surface);
@@ -24,7 +26,6 @@
   border-color: var(--border-strong);
   background: var(--surface-2);
   box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
 }
 
 /* Keyboard focus on the card link outlines the whole card. */
@@ -42,15 +43,18 @@
 /* Screenshot "peeking" out of a tinted panel. */
 .project-card__shot {
   position: relative;
-  overflow: hidden;
+  overflow: clip;
   padding: 28px 0 0 28px;
+  perspective: 1000px;
   background:
     radial-gradient(100% 90% at 0% 0%, var(--project-glow), transparent 65%),
     var(--project-accent-soft);
 }
 
+/* A little wider and taller than the panel, so it can drift without showing a gap. */
 .project-card__img {
-  width: 100%;
+  width: calc(100% + 16px);
+  margin-bottom: -12px;
   aspect-ratio: 16 / 10;
   object-fit: cover;
   object-position: left top;
@@ -58,11 +62,7 @@
   border-top: 1px solid var(--border-strong);
   border-left: 1px solid var(--border-strong);
   box-shadow: var(--shadow-lg);
-  transition: transform 0.6s var(--ease-out);
-}
-
-.project-card:hover .project-card__img {
-  transform: translate(-6px, -6px);
+  transition: translate var(--motion-hover) var(--ease-out);
 }
 
 /* Show the screenshot that matches the current theme. */

@@ -29,7 +29,9 @@ No UI framework or chart library is used. The dashboard chart is built with HTML
 - Floating glass navigation with an active-section highlight and a glass mobile menu
 - Dark, Light and System themes, saved in LocalStorage, with smooth colour transitions
 - Three working projects. Clicking a project card opens the app on its own page in a new tab
-- Subtle reveal animations that are turned off when the user prefers reduced motion
+- One consistent 3D motion system (`src/styles/motion.css`): blocks rise into place with a small 3D tilt, cards tilt towards the pointer with their content floating above, the hero lays back as you scroll past it, and project screenshots stand up as they scroll into view
+- A rotating 3D particle globe behind the portrait (canvas, no 3D library) that marks Phnom Penh
+- All motion pauses off screen and turns off when the user prefers reduced motion
 - Responsive layout for desktop, laptop, tablet and mobile
 - Accessibility: semantic HTML, skip link, visible focus states, keyboard support and ARIA labels
 - SEO: page title, meta description, Open Graph tags, favicon and per-page titles
@@ -165,14 +167,14 @@ kev-portfolio/
     │   ├── profile.js      # Personal info, skills, education, experience, links
     │   ├── projects.js     # Project names, descriptions, screenshots and GitHub links
     │   └── navigation.js   # Navigation items
-    ├── hooks/              # useLocalStorage, useReveal, useScrollSpy, useTheme, ...
+    ├── hooks/              # usePointerEffects, useReveal, useScrollSpy, useTheme, ...
     ├── pages/              # HomePage, ProjectAppPage, NotFoundPage
     ├── projects/           # The three apps (each with its own CSS)
     │   ├── task-manager/
     │   ├── shop-dashboard/
     │   └── weather-explorer/
     ├── sections/           # Hero, About, Skills, Projects, Experience, Education, Contact
-    ├── styles/             # Design tokens, base styles, layout, components, sections
+    ├── styles/             # Design tokens, base styles, layout, components, sections, motion
     └── utils/
 ```
 
