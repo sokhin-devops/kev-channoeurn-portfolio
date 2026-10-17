@@ -1,41 +1,54 @@
-import { ArrowRight, ArrowUpRight } from 'lucide-react'
-import { Link } from 'react-router-dom'
-import { ProjectPreview } from './ProjectPreview'
+import { ArrowUpRight } from 'lucide-react'
+import { GitHubIcon } from '../ui/GitHubIcon'
 
+/**
+ * The whole card opens the project on its own page in a new tab.
+ * The GitHub link sits above the card link, so it can still be clicked on its own.
+ */
 export function ProjectCard({ project }) {
-  const detailPath = `/projects/${project.slug}`
+  const alt = `Screenshot of the ${project.name} app`
 
   return (
-    <article className="project" data-accent={project.accent} aria-labelledby={`project-${project.slug}-title`}>
-      {/* The preview repeats the title link, so it is hidden from keyboard and screen readers. */}
-      <Link to={detailPath} className="project__media" tabIndex={-1} aria-hidden="true">
-        <ProjectPreview slug={project.slug} name={project.name} />
-      </Link>
+    <article className="project-card" data-accent={project.accent}>
+      <div className="project-card__shot">
+        <img
+          className="project-card__img project-card__img--dark"
+          src={project.screenshots.dark}
+          alt={alt}
+          loading="lazy"
+          decoding="async"
+        />
+        <img
+          className="project-card__img project-card__img--light"
+          src={project.screenshots.light}
+          alt={alt}
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
 
-      <div className="project__body">
-        <h3 id={`project-${project.slug}-title`} className="project__title">
-          <Link to={detailPath}>{project.name}</Link>
+      <div className="project-card__body">
+        <h3 className="project-card__title">
+          <a className="project-card__link" href={`/projects/${project.slug}`} target="_blank" rel="noopener">
+            {project.name}
+            <span className="sr-only"> (opens in a new tab)</span>
+          </a>
+          <ArrowUpRight size={18} className="project-card__arrow" aria-hidden="true" />
         </h3>
-        <p className="project__description">{project.description}</p>
-        <p className="project__tech">{project.technologies.map((tech) => tech.name).join(' · ')}</p>
+        <p className="project-card__description">{project.description}</p>
 
-        <div className="project__links">
-          <Link to={detailPath} className="text-link" aria-label={`View project: ${project.name}`}>
-            View project
-            <ArrowRight size={15} aria-hidden="true" />
-          </Link>
-          {project.links.github && (
-            <a
-              href={project.links.github}
-              className="text-link text-link--muted"
-              target="_blank"
-              rel="noreferrer"
-              aria-label={`${project.name} source code on GitHub`}
-            >
-              GitHub
-              <ArrowUpRight size={15} aria-hidden="true" />
-            </a>
-          )}
+        <div className="project-card__footer">
+          <p className="project-card__tech">{project.technologies.join(' · ')}</p>
+          <a
+            className="project-card__github"
+            href={project.links.github}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`${project.name} source code on GitHub`}
+          >
+            <GitHubIcon size={14} />
+            GitHub
+          </a>
         </div>
       </div>
     </article>

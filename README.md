@@ -28,16 +28,16 @@ No UI framework or chart library is used. The dashboard chart is built with HTML
 - Each section has its own route (for example `/skills`) that scrolls to the section
 - Floating glass navigation with an active-section highlight and a glass mobile menu
 - Dark, Light and System themes, saved in LocalStorage, with smooth colour transitions
-- Three working demo projects, each with a detail page and a full-screen demo page
+- Three working projects. Clicking a project card opens the app on its own page in a new tab
 - Subtle reveal animations that are turned off when the user prefers reduced motion
 - Responsive layout for desktop, laptop, tablet and mobile
 - Accessibility: semantic HTML, skip link, visible focus states, keyboard support and ARIA labels
 - SEO: page title, meta description, Open Graph tags, favicon and per-page titles
-- Demo apps are lazy-loaded, so the main portfolio stays light
+- Project apps are lazy-loaded, so the main portfolio stays light
 
 ## Projects
 
-All three projects live in `src/projects/` and run entirely in the browser.
+All three projects live in `src/projects/` and run entirely in the browser. Each one opens full screen at `/projects/<slug>`, with a slim top bar (back to the portfolio, GitHub, theme). The project cards use real screenshots of the apps, one for each theme.
 
 ### Student Task Manager
 
@@ -87,7 +87,7 @@ Each demo project also has its own standalone repository:
 | Mini Shop Dashboard | <https://github.com/sokhin-devops/mini-shop-dashboard> |
 | Weather & Travel Explorer | <https://github.com/sokhin-devops/weather-travel-explorer> |
 
-The same app code lives in `src/projects/` here, so the portfolio can show each project as a live preview. When you change an app, update both copies.
+The same app code lives in `src/projects/` here, so each project can open on its own page inside the portfolio. When you change an app, update both copies (and retake its screenshots in `src/assets/projects/` if it looks different).
 
 ## Installation
 
@@ -134,13 +134,12 @@ npm run lint
 | `/experience` | Home, scrolled to Experience |
 | `/education` | Home, scrolled to Education |
 | `/contact` | Home, scrolled to Contact |
-| `/projects/student-task-manager` | Student Task Manager: details + live preview |
-| `/projects/mini-shop-dashboard` | Mini Shop Dashboard: details + live preview |
-| `/projects/weather-explorer` | Weather & Travel Explorer: details + live preview |
-| `/projects/student-task-manager/demo` | Student Task Manager, full screen |
-| `/projects/mini-shop-dashboard/demo` | Mini Shop Dashboard, full screen |
-| `/projects/weather-explorer/demo` | Weather & Travel Explorer, full screen |
+| `/projects/student-task-manager` | Student Task Manager app, full screen |
+| `/projects/mini-shop-dashboard` | Mini Shop Dashboard app, full screen |
+| `/projects/weather-explorer` | Weather & Travel Explorer app, full screen |
 | Any other path | 404 page |
+
+Old `/projects/<slug>/demo` links redirect to `/projects/<slug>`.
 
 ## Environment Variables
 
@@ -156,19 +155,19 @@ kev-portfolio/
 └── src/
     ├── main.jsx            # App entry: router, theme provider, global CSS
     ├── App.jsx             # All routes
-    ├── assets/             # Profile photo
+    ├── assets/             # Profile photo and project screenshots
     ├── components/
     │   ├── layout/         # Navbar, Footer, Layout, AmbientBackground
-    │   ├── projects/       # ProjectCard, ProjectPreview, ProjectLinks
-    │   └── ui/             # Button, Badge, Reveal, ThemeSwitcher, ...
+    │   ├── projects/       # ProjectCard, AppLoading
+    │   └── ui/             # Button, Reveal, SplitSection, ThemeSwitcher, ...
     ├── context/            # ThemeContext (dark / light / system)
     ├── data/
     │   ├── profile.js      # Personal info, skills, education, experience, links
-    │   ├── projects.js     # Project descriptions and GitHub / demo links
+    │   ├── projects.js     # Project names, descriptions, screenshots and GitHub links
     │   └── navigation.js   # Navigation items
     ├── hooks/              # useLocalStorage, useReveal, useScrollSpy, useTheme, ...
-    ├── pages/              # HomePage, ProjectDetailPage, ProjectDemoPage, NotFoundPage
-    ├── projects/           # The three demo apps (each with its own CSS)
+    ├── pages/              # HomePage, ProjectAppPage, NotFoundPage
+    ├── projects/           # The three apps (each with its own CSS)
     │   ├── task-manager/
     │   ├── shop-dashboard/
     │   └── weather-explorer/
@@ -181,5 +180,6 @@ kev-portfolio/
 
 - **Contact details, skills, education, experience:** edit `src/data/profile.js`.
 - **GitHub profile link:** set `links.github` in `src/data/profile.js`. While it is `null`, no GitHub icon is shown in the navigation.
-- **Project GitHub / Live Demo links:** set in `src/data/projects.js`. `links.github` already points to each project's repository. `links.demo` is `null` until a project is deployed, so the cards show "Local Project".
+- **Project details:** edit `src/data/projects.js` (name, description, technologies, GitHub link).
+- **Project screenshots:** replace the `*-dark.jpg` and `*-light.jpg` files in `src/assets/projects/` (16:10, taken from each app's `/projects/<slug>` page).
 - **Profile photo:** replace `src/assets/kev-channoeurn.jpg`, keeping the same file name.

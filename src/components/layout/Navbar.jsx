@@ -21,10 +21,7 @@ export function Navbar() {
   const spiedSection = useScrollSpy(spyIds, { enabled: isHomePage, preferredId: isHomePage ? routeSection : null })
 
   // On the home page the scroll position decides the active link.
-  // On project pages "Projects" stays active.
-  let activeId = null
-  if (isHomePage) activeId = spiedSection ?? routeSection
-  else if (pathname.startsWith('/projects')) activeId = 'projects'
+  const activeId = isHomePage ? (spiedSection ?? routeSection) : null
 
   // Add a glass background once the page is scrolled.
   useEffect(() => {

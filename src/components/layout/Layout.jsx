@@ -1,4 +1,5 @@
 import { Outlet, useLocation } from 'react-router-dom'
+import { sectionIds } from '../../data/navigation'
 import { AmbientBackground } from './AmbientBackground'
 import { Footer } from './Footer'
 import { Navbar } from './Navbar'
@@ -6,7 +7,8 @@ import { Navbar } from './Navbar'
 export function Layout() {
   const { pathname } = useLocation()
   // All section routes share the home page, so they share one transition key.
-  const transitionKey = pathname.startsWith('/projects/') ? pathname : 'home'
+  const isHomeRoute = pathname === '/' || sectionIds.includes(pathname.slice(1))
+  const transitionKey = isHomeRoute ? 'home' : pathname
 
   return (
     <div className="app-shell">
