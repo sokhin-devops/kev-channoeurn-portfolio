@@ -189,23 +189,11 @@
 /* ---------- Sections: title on the left, content on the right ---------- */
 
 .section {
-  --section-pad: clamp(64px, 9vw, 112px);
+  --section-pad: clamp(56px, 7vw, 88px);
   position: relative;
   padding-block: var(--section-pad);
   /* When scrolled to, the title lands just below the sticky navigation. */
   scroll-margin-top: calc(var(--nav-height) + 40px - var(--section-pad));
-}
-
-/* A thin rule between sections, as wide as the content. */
-.section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: min(var(--container), calc(100% - var(--gutter) * 2));
-  height: 1px;
-  background: var(--border);
-  transform: translateX(-50%);
 }
 
 .split {
@@ -250,38 +238,160 @@
   color: var(--text-2);
 }
 
-/* Label / value rows used for facts, skills, experience and education. */
-.rows {
-  margin-top: 40px;
-  border-bottom: 1px solid var(--border);
-}
+/* ---------- Tiles: soft panels for facts and skill groups ---------- */
 
-.rows--flush {
-  margin-top: 0;
-}
-
-.row {
+.tiles {
   display: grid;
-  gap: 4px 24px;
-  padding-block: 18px;
-  border-top: 1px solid var(--border);
+  gap: 12px;
 }
 
-@media (min-width: 640px) {
-  .row {
-    grid-template-columns: 150px minmax(0, 1fr);
-  }
+.tile {
+  min-width: 0;
+  padding: 18px 20px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  transition:
+    border-color 0.3s ease,
+    background-color 0.3s ease;
 }
 
-.row__label {
-  padding-top: 1px;
-  font-size: 14px;
+.tile:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-2);
+}
+
+.tile__label {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0;
   color: var(--text-3);
 }
 
-.row__value {
-  min-width: 0;
+.tile__value {
+  margin-top: 6px;
   font-size: 15.5px;
+  line-height: 1.5;
+}
+
+/* About facts: three short facts in a row, interests across the full width. */
+.tiles--facts {
+  margin-top: 36px;
+}
+
+@media (min-width: 640px) {
+  .tiles--facts {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .tiles--facts > :last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Skills: frontend across the top, then two groups per row. */
+@media (min-width: 640px) {
+  .tiles--skills {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tiles--skills > :first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 13px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+/* ---------- Timeline: experience and education ---------- */
+
+.timeline {
+  position: relative;
+  display: grid;
+  gap: 32px;
+  padding-left: 28px;
+}
+
+/* The vertical line connecting the dots. */
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: 4px;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--border-strong), var(--border) 80%, transparent);
+}
+
+.timeline__item {
+  position: relative;
+}
+
+.timeline__item::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: -28px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--bg);
+  box-shadow: 0 0 0 1.5px var(--accent);
+}
+
+.timeline__item:first-child::before {
+  background: var(--accent);
+  box-shadow:
+    0 0 0 1.5px var(--accent),
+    0 0 0 5px var(--accent-soft);
+}
+
+.timeline__period {
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-3);
+}
+
+.timeline__title {
+  margin-top: 6px;
+  font-size: 17px;
+  letter-spacing: -0.015em;
+}
+
+.timeline__place {
+  margin-top: 2px;
+  font-size: 15px;
+  color: var(--text-2);
+}
+
+.timeline__text {
+  max-width: 60ch;
+  margin-top: 10px;
+  color: var(--text-2);
+}
+
+.timeline__meta {
+  margin-top: 8px;
+  font-size: 13.5px;
+  color: var(--text-3);
 }
 
 /* ---------- Reveal animation ---------- */

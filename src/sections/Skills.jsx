@@ -5,20 +5,20 @@ import { skillGroups } from '../data/profile'
 export function Skills() {
   return (
     <SplitSection id="skills" title="Skills">
-      <Reveal as="dl" className="rows rows--flush">
-        {skillGroups.map((group) => (
-          <div key={group.title} className="row">
-            <dt className="row__label">{group.title}</dt>
-            <dd className="row__value">
-              <ul className="skill-list">
-                {group.skills.map((skill) => (
-                  <li key={skill}>{skill}</li>
-                ))}
-              </ul>
-            </dd>
-          </div>
+      <div className="tiles tiles--skills">
+        {skillGroups.map((group, index) => (
+          <Reveal key={group.title} delay={index} className="tile">
+            <h3 className="tile__label">{group.title}</h3>
+            <ul className="chips">
+              {group.skills.map((skill) => (
+                <li key={skill} className="chip">
+                  {skill}
+                </li>
+              ))}
+            </ul>
+          </Reveal>
         ))}
-      </Reveal>
+      </div>
     </SplitSection>
   )
 }

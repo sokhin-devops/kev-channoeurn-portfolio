@@ -5,18 +5,14 @@ import { experience } from '../data/profile'
 export function Experience() {
   return (
     <SplitSection id="experience" title="Experience">
-      <ol className="rows rows--flush">
+      <ol className="timeline">
         {experience.map((job) => (
-          <Reveal as="li" key={`${job.role}-${job.organization}`} className="row">
-            <p className="row__label">{job.period}</p>
-            <div className="row__value">
-              <h3 className="entry__title">
-                {job.role}
-                <span className="entry__org">{job.organization}</span>
-              </h3>
-              <p className="entry__text">{job.summary}</p>
-              <p className="entry__meta">{job.skills.join(' · ')}</p>
-            </div>
+          <Reveal as="li" key={`${job.role}-${job.organization}`} className="timeline__item">
+            <p className="timeline__period">{job.period}</p>
+            <h3 className="timeline__title">{job.role}</h3>
+            <p className="timeline__place">{job.organization}</p>
+            <p className="timeline__text">{job.summary}</p>
+            <p className="timeline__meta">{job.skills.join(' · ')}</p>
           </Reveal>
         ))}
       </ol>

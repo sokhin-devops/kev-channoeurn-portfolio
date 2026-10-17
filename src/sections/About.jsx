@@ -11,14 +11,14 @@ export function About() {
         ))}
       </Reveal>
 
-      <Reveal as="dl" delay={1} className="rows">
-        {aboutFacts.map((fact) => (
-          <div key={fact.label} className="row">
-            <dt className="row__label">{fact.label}</dt>
-            <dd className="row__value">{fact.value}</dd>
-          </div>
+      <dl className="tiles tiles--facts">
+        {aboutFacts.map((fact, index) => (
+          <Reveal key={fact.label} delay={index} className="tile">
+            <dt className="tile__label">{fact.label}</dt>
+            <dd className="tile__value">{fact.value}</dd>
+          </Reveal>
         ))}
-      </Reveal>
+      </dl>
     </SplitSection>
   )
 }

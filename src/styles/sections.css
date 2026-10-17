@@ -3,7 +3,17 @@
 /* ---------- Hero ---------- */
 
 .hero {
-  padding-block: clamp(48px, 9vw, 120px) clamp(72px, 10vw, 128px);
+  display: grid;
+  align-items: center;
+  min-height: calc(100svh - var(--nav-height));
+  padding-block: clamp(40px, 6vw, 72px);
+}
+
+@media (min-height: 1100px) {
+  .hero {
+    min-height: 0;
+    padding-block: 140px;
+  }
 }
 
 .hero__grid {
@@ -169,41 +179,6 @@
   object-fit: cover;
   object-position: 50% 22%;
   border-radius: 24px;
-}
-
-/* ---------- Skills ---------- */
-
-.skill-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 22px;
-}
-
-/* ---------- Experience & education entries ---------- */
-
-.entry__title {
-  display: grid;
-  gap: 2px;
-  font-size: 16px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-}
-
-.entry__org {
-  font-size: 15px;
-  font-weight: 400;
-  color: var(--text-2);
-}
-
-.entry__text {
-  margin-top: 10px;
-  color: var(--text-2);
-}
-
-.entry__meta {
-  margin-top: 8px;
-  font-size: 13.5px;
-  color: var(--text-3);
 }
 
 /* ---------- Contact ---------- */
