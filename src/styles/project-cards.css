@@ -10,7 +10,7 @@
   position: relative;
   display: grid;
   overflow: hidden;
-  border-radius: 22px;
+  border-radius: var(--radius-card);
   border: 1px solid var(--border);
   background: var(--surface);
   transition:

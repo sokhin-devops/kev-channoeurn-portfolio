@@ -177,6 +177,32 @@
   pointer-events: none;
 }
 
+/* The 3D stage: perspective for the portrait tilt, and room for the globe. */
+.hero__stage {
+  position: relative;
+  isolation: isolate;
+  perspective: 1100px;
+}
+
+.hero__globe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: -1;
+  width: 196%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  animation: globe-in 1.6s var(--ease-out) 0.3s both;
+}
+
+@keyframes globe-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.92);
+  }
+}
+
 /* An angle that can be animated, used by the rotating ring. */
 @property --ring-angle {
   syntax: '<angle>';
@@ -190,15 +216,21 @@
   padding: 6px;
   border-radius: 30px;
   border: 1px solid var(--border-strong);
-  background: var(--surface-2);
+  background: color-mix(in srgb, var(--surface-solid) 70%, transparent);
   box-shadow: var(--shadow-lg);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  /* Tilt set by useTilt; it eases back to flat when the pointer leaves. */
+  transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
   transition:
-    transform 0.7s var(--ease-out),
-    box-shadow 0.7s var(--ease-out);
+    transform 0.6s var(--ease-out),
+    box-shadow 0.6s var(--ease-out);
 }
 
-.portrait:hover {
-  transform: translateY(-4px);
+.hero__stage:hover .portrait {
+  box-shadow:
+    var(--shadow-lg),
+    0 30px 80px -30px var(--accent);
 }
 
 /* A slow gradient light travelling around the frame. */
@@ -252,6 +284,20 @@
 }
 
 /* ---------- Contact ---------- */
+
+/* Contact: a closing card with a soft light in the corner. */
+.contact-card {
+  padding: clamp(24px, 4vw, 40px);
+  background:
+    radial-gradient(70% 90% at 100% 0%, var(--accent-soft), transparent 70%),
+    var(--surface);
+}
+
+.contact-card:hover {
+  background:
+    radial-gradient(70% 90% at 100% 0%, var(--accent-soft), transparent 70%),
+    var(--surface-2);
+}
 
 .contact__email-row {
   display: flex;

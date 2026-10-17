@@ -235,7 +235,7 @@
   position: relative;
   min-width: 0;
   padding: 20px;
-  border-radius: 18px;
+  border-radius: var(--radius-card);
   border: 1px solid var(--border);
   background: var(--surface);
   transition:
@@ -449,7 +449,7 @@
 .timeline {
   position: relative;
   display: grid;
-  gap: 32px;
+  gap: 14px;
   padding-left: 28px;
 }
 
@@ -457,8 +457,8 @@
 .timeline::before {
   content: '';
   position: absolute;
-  top: 8px;
-  bottom: 8px;
+  top: 28px;
+  bottom: 28px;
   left: 4px;
   width: 1px;
   background: linear-gradient(to bottom, var(--border-strong), var(--border) 80%, transparent);
@@ -471,7 +471,7 @@
 .timeline__item::before {
   content: '';
   position: absolute;
-  top: 6px;
+  top: 25px;
   left: -28px;
   width: 9px;
   height: 9px;
@@ -494,7 +494,7 @@
 }
 
 .timeline__title {
-  margin-top: 6px;
+  margin-top: 4px;
   font-size: 17px;
   letter-spacing: -0.015em;
 }
@@ -559,7 +559,8 @@
 
 .reveal {
   opacity: 0;
-  transform: translateY(14px);
+  transform: perspective(1000px) translateY(18px) rotateX(9deg);
+  transform-origin: 50% 0%;
   filter: blur(6px);
   transition:
     opacity 0.8s var(--ease-out),
