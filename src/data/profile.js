@@ -24,27 +24,74 @@ export const profile = {
   },
 }
 
-export const aboutParagraphs = [
-  "I'm a Computer Science student at the Royal University of Phnom Penh. I enjoy turning ideas into interfaces that are clean, responsive and easy to use.",
-  "Right now I'm learning React by building small, practical projects. I'm looking for an internship where I can learn from experienced developers and contribute to real products.",
+// About: one large statement (from Kev's own words), then a short paragraph.
+export const aboutStatement = {
+  before: 'I enjoy turning ideas into interfaces that are ',
+  highlight: 'clean, responsive',
+  after: ' and easy to use.',
+}
+
+export const aboutParagraph =
+  "I'm a Computer Science student at the Royal University of Phnom Penh, learning React by building small, practical projects. I'm looking for an internship where I can learn from experienced developers and contribute to real products."
+
+// `icon` names are mapped to icons in src/components/ui/Icon.jsx.
+export const aboutFacts = [
+  { label: 'Based in', value: 'Tuol Sangke 1, Phnom Penh', icon: 'map-pin' },
+  { label: 'Studying', value: 'BSc Computer Science, RUPP', icon: 'graduation-cap' },
+  { label: 'Languages', value: 'Khmer, English', icon: 'languages' },
+  { label: 'Looking for', value: 'Front-End internship', icon: 'target' },
 ]
 
-export const aboutFacts = [
-  { label: 'Based in', value: 'Tuol Sangke 1, Phnom Penh' },
-  { label: 'Studying', value: 'BSc Computer Science, RUPP' },
-  { label: 'Languages', value: 'Khmer, English' },
+export const interests = [
+  { label: 'New technologies', icon: 'compass' },
+  { label: 'Real-world projects', icon: 'hammer' },
+  { label: 'Problem-solving', icon: 'lightbulb' },
+  { label: 'Developer communities', icon: 'users' },
+]
+
+// `logo` refers to a brand logo in src/data/techIcons.js; `icon` is used when there is no logo.
+export const skillGroups = [
   {
-    label: 'Interests',
-    value: 'New technologies, real-world projects, problem-solving, developer communities',
+    title: 'Frontend',
+    icon: 'layout',
+    skills: [
+      { name: 'HTML', logo: 'html' },
+      { name: 'CSS', logo: 'css' },
+      { name: 'JavaScript', logo: 'javascript' },
+      { name: 'React.js', logo: 'react' },
+    ],
+  },
+  {
+    title: 'Backend',
+    icon: 'server',
+    skills: [
+      { name: 'PHP', logo: 'php' },
+      { name: 'Postman', logo: 'postman' },
+    ],
+  },
+  {
+    title: 'Database',
+    icon: 'database',
+    skills: [
+      { name: 'MySQL', logo: 'mysql' },
+      { name: 'XAMPP', logo: 'xampp' },
+    ],
+  },
+  {
+    title: 'Tools',
+    icon: 'wrench',
+    skills: [
+      { name: 'Git', logo: 'git' },
+      { name: 'GitHub', logo: 'github' },
+      { name: 'VS Code', icon: 'code' },
+    ],
   },
 ]
 
-export const skillGroups = [
-  { title: 'Frontend', skills: ['HTML', 'CSS', 'JavaScript', 'React.js'] },
-  { title: 'Backend', skills: ['PHP', 'Postman'] },
-  { title: 'Database', skills: ['MySQL', 'XAMPP'] },
-  { title: 'Tools', skills: ['Git', 'GitHub', 'Visual Studio Code'] },
-  { title: 'Soft skills', skills: ['Problem-solving', 'Teamwork', 'Adaptability'] },
+export const softSkills = [
+  { name: 'Problem-solving', icon: 'puzzle' },
+  { name: 'Teamwork', icon: 'users' },
+  { name: 'Adaptability', icon: 'refresh' },
 ]
 
 export const experience = [
